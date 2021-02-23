@@ -13,6 +13,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
+hyperparam = {'activation':'tanh', 'regularization':'l2', 'batch_size':20, 'learning_rate':1e-4, 'valid_rate':0.1}
+
 # Extract atomic position and free energy from OUTCAR
 atom_num=144
 
@@ -44,6 +46,21 @@ x_test = torch.FloatTensor(pos_data[::10][270:])
 y_test = torch.FloatTensor(e_data[::10][270:])
 
 # make neural network (432-30-30-1)
+class toySimpleNN(nn.Module):
+    def __init__(self, act):
+        super().__init__()
+        self.activations = nn.ModuleDict([
+                ['relu', nn.ReLU()],
+                ['sigmoid', nn.Sigmoid()],
+                ['tanh', nn.Tanh()]
+        ])
+        self.act = act
+        self.linear1 = nn.Linear(432,30, bias=True)
+        self.linear2 = nn.Linear(30,1, bias=True)
+        #model = torch.nn.Sequential(linear1, self.activations[self.act], linear2)
+    def forward(self, x):
+        return torch.nn.Sequential(self.linear1, self.act, self.linear2)
+model = toySimpleNN(act=hyperparam['activation'])
 linear1 = nn.Linear(432,30, bias=True)
 linear2 = nn.Linear(30,1, bias=True)
 sigmoid = nn.Sigmoid()
