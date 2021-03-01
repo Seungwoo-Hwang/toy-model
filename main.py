@@ -4,7 +4,6 @@
     
     1. Use position descriptor consist of 144 atoms, total 432 descriptors(Not symmetry function descriptor)
     2. Train just energy term (Not include force/stress)
-    3. 
 
 """
 

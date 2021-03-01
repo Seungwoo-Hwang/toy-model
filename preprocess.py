@@ -1,6 +1,26 @@
 import torch
 
 class Data:
+    """ Data class that used in ToySimpleNN model
+
+    First, initialize with hyperparameter input
+    Second, load data set that form of "Data()" class
+    Third, initialize optimizer
+    And then, training Neural Network with loaded data set
+    Also test Neural Network performance
+
+    Attributes:
+        atom_num:(int)               Total atom number in each snapshot
+        f_name:(str)                 File name to open
+        x_train:(torch.FloatTensor)  Torch tensor that used as x_train
+        y_train:(torch.FloatTensor)  Torch tensor that used as y_train
+        x_test:(torch.FloatTensor)   Torch tensor that used as x_test
+        y_test:(torch.FloatTensor)   Torch tensor that used as y_test
+    
+    Methods:
+        load_OUTCAR(FILE)
+        train_test_split()    
+    """
     def __init__(self):
         self.atom_num = 144
         self.f_name = None
@@ -10,9 +30,25 @@ class Data:
         self.y_test = None
 
     def load_OUTCAR(self, FILE):
+        """ Set OUTCAR format file name to be used
+
+        Args:
+            FILE:(str) File names to be used (OUTCAR format)
+        """
         self.f_name = FILE
 
     def train_test_split(self):
+        """ Set OUTCAR format file name to be used
+
+        First, open OUTCAR file that name self.f_name
+        Read position and conver to 432 dimension vector type and used as x_train/x_test
+        Read energy and used as y_train/y_test
+        Split position data and energy data to train/test
+        > After split, set self.x_train, self.x_test, self.y_train, self.y_test
+
+        Returns:
+            Splited train/test x data and y data to be used in other Class or Method (ex> ToySimpleNN class)
+        """
         if self.f_name == None:
             print('Must load OUTCAR first')
             raise Exception('Use "Data.load_OUTCAR(FILE)" method')
